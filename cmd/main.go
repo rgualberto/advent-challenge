@@ -1,8 +1,8 @@
 package main
 
 import (
-	// "github.com/machineq/advent-stuff/day1/puzzle1"
-	"github.com/machineq/advent-stuff/day1/puzzle2"
+	// "github.com/rgualberto/advent-stuff/day1/puzzle1"
+	"github.com/rgualberto/advent-stuff/day1/puzzle2"
 )
 
 func main() {
