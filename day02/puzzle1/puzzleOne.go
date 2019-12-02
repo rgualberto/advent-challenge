@@ -45,6 +45,14 @@ func Run() {
 	program[1] = 12
 	program[2] = 2
 
+	program = CalculateIntcodeOutput(program)
+
+	fmt.Printf("final program: %v\n", program)
+	fmt.Printf("value at position 0: %v\n", program[0])
+}
+
+// CalculateIntcodeOutput runs the intcode program
+func CalculateIntcodeOutput(program []int) []int {
 	index := 0
 	var terminateProgram bool
 	for {
@@ -57,8 +65,7 @@ func Run() {
 		index += 4
 	}
 
-	fmt.Printf("final program: %v\n", program)
-	fmt.Printf("value at position 0: %v\n", program[0])
+	return program
 }
 
 func runProgramBlock(p []int, index int) ([]int, bool) {
