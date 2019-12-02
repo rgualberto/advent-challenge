@@ -45,18 +45,25 @@ func Run() {
 	program[1] = 12
 	program[2] = 2
 
-	program = CalculateIntcodeOutput(program)
+	program, err = CalculateIntcodeOutput(program)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	fmt.Printf("final program: %v\n", program)
 	fmt.Printf("value at position 0: %v\n", program[0])
 }
 
 // CalculateIntcodeOutput runs the intcode program
-func CalculateIntcodeOutput(program []int) []int {
+func CalculateIntcodeOutput(program []int) ([]int, error) {
 	index := 0
 	var terminateProgram bool
+	var err error
 	for {
-		program, terminateProgram = runProgramBlock(program, index)
+		program, terminateProgram, err = runProgramBlock(program, index)
+		if err != nil {
+			return []int{}, err
+		}
 
 		if terminateProgram {
 			break
@@ -65,14 +72,14 @@ func CalculateIntcodeOutput(program []int) []int {
 		index += 4
 	}
 
-	return program
+	return program, nil
 }
 
-func runProgramBlock(p []int, index int) ([]int, bool) {
+func runProgramBlock(p []int, index int) ([]int, bool, error) {
 	opCode := p[index]
 
 	if opCode == 99 {
-		return p, true
+		return p, true, nil
 	}
 
 	firstIndex := p[index+1]
@@ -89,8 +96,8 @@ func runProgramBlock(p []int, index int) ([]int, bool) {
 		p[destination] = v
 		break
 	default:
-		log.Fatalf("##### Invalid opcode provided: %v\n\n", opCode)
+		return p, true, fmt.Errorf("invalid opcode provided: %v at index: %v", opCode, index)
 	}
 
-	return p, false
+	return p, false, nil
 }
