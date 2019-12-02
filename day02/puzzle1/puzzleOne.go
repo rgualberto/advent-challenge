@@ -11,7 +11,7 @@ import (
 
 // Run starts the program
 func Run() {
-	file, err := os.Open("./day2/puzzle1/input.txt")
+	file, err := os.Open("./day02/puzzle1/input.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
