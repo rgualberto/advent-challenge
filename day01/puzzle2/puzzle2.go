@@ -3,10 +3,10 @@ package puzzle2
 import (
 	"fmt"
 	"log"
-	"math"
 	"strconv"
 
 	"github.com/rgualberto/advent-stuff/common"
+	"github.com/rgualberto/advent-stuff/day01"
 )
 
 // Run starts the program
@@ -25,21 +25,11 @@ func Run() {
 			log.Fatal(err)
 		}
 
-		fuel := calculateFuelRequirements(f)
+		fuel := day01.CalculateFuelRequirements(f)
 		finalSum += int(fuel)
 
 		fmt.Printf("\"%s\" -> %v\n", partMass, fuel)
 	}
 
 	fmt.Printf("\n\nfinal sum: %v\n\n", finalSum)
-}
-
-func calculateFuelRequirements(mass float64) float64 {
-	floatFuel := math.Floor(mass/3) - 2
-
-	if floatFuel <= 0 {
-		return 0
-	}
-
-	return floatFuel + calculateFuelRequirements(floatFuel)
 }
