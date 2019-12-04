@@ -1,15 +1,14 @@
-package puzzle2
+package day03
 
 import (
 	"fmt"
 	"log"
 
 	"github.com/rgualberto/advent-stuff/common"
-	"github.com/rgualberto/advent-stuff/day03"
 )
 
-// Run starts the program
-func Run() {
+// RunPuzzle2 starts the program
+func RunPuzzle2() {
 	fmt.Printf("\n****** Calculating intersection point with smallest steps to reach from central port ********\n")
 
 	wirepaths, err := common.Scan("./inputs/day03.txt")
@@ -17,9 +16,14 @@ func Run() {
 		log.Fatal(err)
 	}
 
-	var wireCoordinates [][]day03.Coordinates
+	ExecutePuzzle2(wirepaths)
+}
+
+// ExecutePuzzle2 executes duh
+func ExecutePuzzle2(wirepaths []string) int {
+	var wireCoordinates [][]Coordinates
 	for _, wp := range wirepaths {
-		wc, err := day03.TraceWirePath(wp)
+		wc, err := TraceWirePath(wp)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -27,15 +31,17 @@ func Run() {
 		wireCoordinates = append(wireCoordinates, wc)
 	}
 
-	_, intersectionPoints, err := day03.FindIntersectionPoints(wireCoordinates[0], wireCoordinates[1])
+	_, intersectionPoints, err := FindIntersectionPoints(wireCoordinates[0], wireCoordinates[1])
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	smallestStepCount, err := day03.CalculateSmallestStepCount(intersectionPoints)
+	smallestStepCount, err := CalculateSmallestStepCount(intersectionPoints)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	fmt.Printf("\n\nSmallest step count to central port: %v\n", smallestStepCount)
+
+	return smallestStepCount
 }
