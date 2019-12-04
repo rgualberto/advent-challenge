@@ -1,36 +1,27 @@
 package puzzle2
 
 import (
-	"bufio"
 	"errors"
 	"fmt"
 	"log"
-	"os"
 	"strconv"
 	"strings"
 
+	"github.com/rgualberto/advent-stuff/common"
 	d2puz1 "github.com/rgualberto/advent-stuff/day02/puzzle1"
 )
 
 // Run starts the program
 func Run() {
-	file, err := os.Open("./day02/puzzle2/input.txt")
+	fmt.Printf("\n****** Running Intcode program - finding noun & verb to output 19690720 ********\n")
+
+	intcode, err := common.Scan("./inputs/day02.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer file.Close()
-
-	fmt.Printf("\n****** Running Intcode program - finding noun & verb to output 19690720 ********\n")
-
-	scanner := bufio.NewScanner(file)
 
 	// only care about first line
-	scanner.Scan()
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
-	splitVals := strings.Split(scanner.Text(), ",")
+	splitVals := strings.Split(intcode[0], ",")
 
 	var program []int
 	for _, v := range splitVals {

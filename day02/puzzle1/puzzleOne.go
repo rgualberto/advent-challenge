@@ -1,33 +1,25 @@
 package puzzle1
 
 import (
-	"bufio"
 	"fmt"
 	"log"
-	"os"
 	"strconv"
 	"strings"
+
+	"github.com/rgualberto/advent-stuff/common"
 )
 
 // Run starts the program
 func Run() {
-	file, err := os.Open("./day02/puzzle1/input.txt")
+	fmt.Printf("\n****** Running Intcode program - adjusting positions 1 and 2 with 12 and 2 ********\n")
+
+	intcode, err := common.Scan("./inputs/day02.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer file.Close()
-
-	fmt.Printf("\n****** Running Intcode program - adjusting positions 1 and 2 with 12 and 2 ********\n")
-
-	scanner := bufio.NewScanner(file)
 
 	// only care about first line
-	scanner.Scan()
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
-	splitVals := strings.Split(scanner.Text(), ",")
+	splitVals := strings.Split(intcode[0], ",")
 
 	var program []int
 	for _, v := range splitVals {

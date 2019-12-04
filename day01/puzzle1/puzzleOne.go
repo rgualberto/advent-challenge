@@ -1,29 +1,26 @@
 package puzzle1
 
 import (
-	"bufio"
 	"fmt"
 	"log"
 	"math"
-	"os"
 	"strconv"
+
+	"github.com/rgualberto/advent-stuff/common"
 )
 
 // Run starts the program
 func Run() {
-	file, err := os.Open("./day01/puzzle1/input.txt")
+	partsMass, err := common.Scan("./inputs/day01.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer file.Close()
 
-	scanner := bufio.NewScanner(file)
 	finalSum := 0
 
-	fmt.Printf("\n****** Scanning and calculating fuel ********\n")
-	for scanner.Scan() {
-		in := scanner.Text()
-		f, err := strconv.ParseFloat(in, 64)
+	fmt.Printf("\n****** Calculating fuel ********\n")
+	for _, partMass := range partsMass {
+		f, err := strconv.ParseFloat(partMass, 64)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -31,11 +28,7 @@ func Run() {
 		fuel := calculateFuel(f)
 		finalSum += fuel
 
-		fmt.Printf("\"%s\" -> %v\n", in, fuel)
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
+		fmt.Printf("\"%s\" -> %v\n", partMass, fuel)
 	}
 
 	fmt.Printf("\n\nfinal sum: %v\n\n", finalSum)
