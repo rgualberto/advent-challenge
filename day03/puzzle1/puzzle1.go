@@ -32,7 +32,10 @@ func Run() {
 		log.Fatal(err)
 	}
 
-	closestPoint := day03.CalculateClosestManhattanDistance(intersectionPoints)
+	closestPoint, err := day03.CalculateClosestManhattanDistance(intersectionPoints)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	fmt.Printf("Closest Manhatten Distance to central port: %v\n", closestPoint)
+	fmt.Printf("\n\nClosest Manhatten Distance to central port: %v\n", closestPoint)
 }
