@@ -17,7 +17,7 @@ func Run() {
 		log.Fatal(err)
 	}
 
-	var wireCoordinates [][][]int
+	var wireCoordinates [][]day03.Coordinates
 	for _, wp := range wirepaths {
 		wc, err := day03.TraceWirePath(wp)
 		if err != nil {
