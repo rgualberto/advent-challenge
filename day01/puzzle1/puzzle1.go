@@ -26,7 +26,7 @@ func Run() {
 		}
 
 		fuel := day01.CalculateFuel(f)
-		finalSum += fuel
+		finalSum += int(fuel)
 
 		fmt.Printf("\"%s\" -> %v\n", partMass, fuel)
 	}
