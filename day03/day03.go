@@ -11,6 +11,9 @@ import (
 // Coordinates is a slice of 2 integers (x, y)
 type Coordinates [2]int
 
+// Intersection is a slice of 3 integers where the first two are coordinates and the last is a step count to that point
+type Intersection [3]int
+
 // TraceWirePath steps through a coord instruction set and returns a slice of x/y coord pairings
 func TraceWirePath(wirepath string) ([]Coordinates, error) {
 	directions := strings.Split(wirepath, ",")
@@ -47,27 +50,33 @@ func TraceWirePath(wirepath string) ([]Coordinates, error) {
 	return wirePathCoordinates, nil
 }
 
-// FindIntersectionPoints returns all intersection coordinates between two provided coordinates
-func FindIntersectionPoints(wireCoords1 []Coordinates, wireCoords2 []Coordinates) ([]Coordinates, error) {
-	var intersectionPoints []Coordinates
+// FindIntersectionPoints returns all intersection coordinates with included steps between two provided coordinates
+func FindIntersectionPoints(wireCoords1 []Coordinates, wireCoords2 []Coordinates) ([]Coordinates, []Intersection, error) {
+	var intersectionPoints []Intersection
+	var intersectionCoords []Coordinates
 
 	// fmt.Printf("\nwc1 len: %v, wc2 len: %v\n", len(wireCoords1), len(wireCoords2))
 	fmt.Println("finding intersection points")
-	for index, wc1 := range wireCoords1 {
-		if index%1000 == 0 {
+	for step1, wc1 := range wireCoords1 {
+		if step1%1000 == 0 {
 			fmt.Printf(".")
 		}
 
-		for _, wc2 := range wireCoords2 {
+		for step2, wc2 := range wireCoords2 {
 			if wc1 == wc2 {
-				intersectionPoints = append(intersectionPoints, wc2)
+				intersectionCoords = append(intersectionCoords, wc1)
+
+				combinedStepCount := step1 + step2 + 2 // add 2 since indeces start at 0
+				intersection := Intersection{wc1[0], wc1[1], combinedStepCount}
+
+				intersectionPoints = append(intersectionPoints, intersection)
 			}
 		}
 	}
 
 	fmt.Println("intersection points: ", intersectionPoints)
 
-	return intersectionPoints, nil
+	return intersectionCoords, intersectionPoints, nil
 }
 
 // CalculateManhattanDistance returns the distance from the central point (0, 0)
@@ -101,4 +110,24 @@ func CalculateClosestManhattanDistance(coordinates []Coordinates) (int, error) {
 	}
 
 	return distance, nil
+}
+
+// CalculateSmallestStepCount selects the intersection point with the least amount of steps
+func CalculateSmallestStepCount(intersectionPts []Intersection) (int, error) {
+	var smallestStepCount int
+
+	fmt.Printf("\n stepCounts: ")
+	for _, point := range intersectionPts {
+		fmt.Printf("%v,", point[2])
+
+		if smallestStepCount == 0 || point[2] < smallestStepCount {
+			smallestStepCount = point[2]
+		}
+	}
+
+	if smallestStepCount == 0 {
+		return smallestStepCount, errors.New("Step count cannot be 0 (unless no data points provided or bad data set)")
+	}
+
+	return smallestStepCount, nil
 }
